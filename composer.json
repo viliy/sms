@@ -1,0 +1,28 @@
+{
+  "name": "viliy/fastd-sms",
+  "description": "SMS for PHP",
+  "license": "MIT",
+  "keywords": [
+    "sms",
+    "php",
+    "fastd",
+    "sms library"
+  ],
+  "authors": [
+    {
+      "name": "zhaQiu",
+      "email": "34485431@qq.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^5.7"
+  },
+  "autoload": {
+    "psr-4": {
+      "Viliy\\FastDSMS\\": "src/"
+    }
+  }
+}
