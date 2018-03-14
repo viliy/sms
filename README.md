@@ -1,2 +1,2 @@
-# fastd-sms
+# sms
 sms
