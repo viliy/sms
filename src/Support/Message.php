@@ -4,7 +4,7 @@
  * @time: 2018/3/29
  */
 
-namespace Viliy\SMS\Format;
+namespace Viliy\SMS\Support;
 
 use Viliy\SMS\Contracts\MessageInterface;
 

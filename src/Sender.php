@@ -8,8 +8,8 @@ use Viliy\SMS\Contracts\StrategyInterface;
 use Viliy\SMS\Exceptions\GatewayErrorException;
 use Viliy\SMS\Exceptions\InvalidArgumentException;
 use Viliy\SMS\Exceptions\NoGatewayAvailableException;
-use Viliy\SMS\Format\Config;
-use Viliy\SMS\Format\Message;
+use Viliy\SMS\Support\Config;
+use Viliy\SMS\Support\Message;
 
 /**
  * Class Sender
@@ -67,13 +67,14 @@ class Sender
 
         $strategyGateways = $this->formatStrategy($this->config);
 
+        $results = [];
         foreach ($strategyGateways as $gateway) {
-            var_dump($this->config[$gateway]);
 
             try {
                 $results[$gateway] = [
                     'status' => self::STATUS_SUCCESS,
-                    'result' => $this->getGateway($gateway)->send($phone, $message, new Config($this->config[$gateway])),
+                    'result' => $this->getGateway($gateway)
+                        ->send($phone, $message, new Config($this->config[$gateway])),
                 ];
                 $isSuccessful = true;
 
@@ -192,6 +193,8 @@ class Sender
      */
     protected function formatStrategy($gateways)
     {
+        $weight = [];
+
         foreach ($gateways as $key => $value) {
             $weight[$key] = $value['weight'];
         }

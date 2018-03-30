@@ -1,6 +1,6 @@
 <?php
 
-namespace Viliy\SMS\Format;
+namespace Viliy\SMS\Support;
 
 use ArrayAccess;
 

@@ -35,11 +35,10 @@ class WeightStrategy implements StrategyInterface
      */
     protected static function weight(array $gateways)
     {
-        $sum = array_sum($gateways);
         $arr = [];
 
         foreach ($gateways as $key => $value) {
-            for ($i = 0; $i >= $sum; $i++) {
+            for ($i = 0; $i <= $value; $i++) {
                 $arr[] = $key;
             }
         }

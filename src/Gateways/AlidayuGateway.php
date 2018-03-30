@@ -1,25 +1,14 @@
 <?php
 
-/*
- * This file is part of the overtrue/easy-sms.
- *
- * (c) overtrue <i@overtrue.me>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Viliy\SMS\Gateways;
 
-use FastD\Http\Request;
 use Viliy\SMS\Contracts\MessageInterface;
 use Viliy\SMS\Exceptions\GatewayErrorException;
-use Viliy\SMS\Format\Config;
-use Viliy\SMS\Gateways\Gateway;
+use Viliy\SMS\Support\Config;
 
 /**
- * Class AlidayuGateway.
- *
+ * Class AlidayuGateway
+ * @package Viliy\SMS\Gateways
  * @see http://open.taobao.com/doc2/apiDetail?apiId=25450#s2
  */
 class AlidayuGateway extends Gateway
@@ -33,16 +22,33 @@ class AlidayuGateway extends Gateway
 
     const API_FORMAT = 'json';
 
+    const REQUEST_METHOD = 'POST';
+
     /**
      * Get gateway name.
      *
      * @return string
      */
-    public function getName()
+    public function getGatewayName()
     {
         return 'alidayu';
     }
 
+    /**
+     * @return string
+     */
+    public function getRequestMethod()
+    {
+        return self::REQUEST_METHOD;
+    }
+
+    /**
+     * @return string
+     */
+    public function getApiUrl()
+    {
+        return self::API_URL;
+    }
 
     /**
      * @param $phone
@@ -69,34 +75,20 @@ class AlidayuGateway extends Gateway
             'sms_param'          => json_encode($message->getData()),
         ];
 
-        var_dump($this->config->get('signature'));
-        $params['sign'] = $this->generateSign($params);
-
-        var_dump($params);
+        $params['sign'] = $this->sign($params);
 
         $result = $this->request($params);
 
-        if (!empty($result['error_response'])) {
-            if (isset($result['error_response']['sub_msg'])) {
-                $message = $result['error_response']['sub_msg'];
-            } else {
-                $message = $result['error_response']['msg'];
-            }
-
-            throw new GatewayErrorException($message, $result['error_response']['code'], $result);
-        }
+        $this->checkStatus($result);
 
         return $result;
     }
 
     /**
-     * Generate Sign.
-     *
-     * @param array $params
-     *
-     * @return string
+     * @param $params
+     * @return array
      */
-    protected function generateSign($params)
+    public function sign($params)
     {
         ksort($params);
         $stringToBeSigned = $this->config->get('app_secret');
@@ -112,19 +104,19 @@ class AlidayuGateway extends Gateway
     }
 
     /**
-     * @param array $params
-     * @return array
+     * @param $result
      * @throws GatewayErrorException
      */
-    public function request(array $params)
+    public function checkStatus($result = null)
     {
-        $response = (new Request('POST', self::API_URL))->send($params);
+        if (!empty($result['error_response'])) {
+            if (isset($result['error_response']['sub_msg'])) {
+                $message = $result['error_response']['sub_msg'];
+            } else {
+                $message = $result['error_response']['msg'];
+            }
 
-        var_dump($response->getBody());
-        if (!$response->isSuccessful()) {
-            throw new GatewayErrorException('Alidayu Gateway Error.', 500);
+            throw new GatewayErrorException($message, $result['error_response']['code'], $result);
         }
-
-        return $response->toArray();
     }
 }

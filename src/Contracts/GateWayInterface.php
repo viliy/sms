@@ -1,7 +1,8 @@
 <?php
 
 namespace Viliy\SMS\Contracts;
-use Viliy\SMS\Format\Config;
+
+use Viliy\SMS\Support\Config;
 
 /**
  * Interface GateWayInterface
@@ -9,6 +10,22 @@ use Viliy\SMS\Format\Config;
  */
 interface GateWayInterface
 {
+
+    /**
+     * @return string
+     */
+    public function getGatewayName();
+
+    /**
+     * @return string
+     */
+    public function getRequestMethod();
+
+    /**
+     * @return string
+     */
+    public function getApiUrl();
+
     /**
      * @param $phone
      * @param MessageInterface $message
@@ -23,8 +40,19 @@ interface GateWayInterface
     public function setConfig(Config $config);
 
     /**
+     * @param $params
+     * @return array
+     */
+    public function sign($params);
+
+    /**
      * @param array $params
      * @return array
      */
     public function request(array $params);
+
+    /**
+     * @param $result
+     */
+    public function checkStatus($result = null);
 }

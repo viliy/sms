@@ -6,8 +6,10 @@
 
 namespace Viliy\SMS\Gateways;
 
+use FastD\Http\Request;
 use Viliy\SMS\Contracts\GateWayInterface;
-use Viliy\SMS\Format\Config;
+use Viliy\SMS\Exceptions\GatewayErrorException;
+use Viliy\SMS\Support\Config;
 
 /**
  * Class Gateway
@@ -26,5 +28,21 @@ abstract class Gateway implements GateWayInterface
     public function setConfig(Config $config)
     {
         $this->config = $config;
+    }
+
+    /**
+     * @param array $params
+     * @return array
+     * @throws GatewayErrorException
+     */
+    public function request(array $params)
+    {
+        $response = (new Request($this->getRequestMethod(), $this->getApiUrl()))->send($params);
+
+        if (!$response->isSuccessful()) {
+            throw new GatewayErrorException(sprintf('%s Gateway Error.', $this->getGatewayName()), 500);
+        }
+
+        return $response->toArray();
     }
 }
