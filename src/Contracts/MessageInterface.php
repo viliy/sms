@@ -17,7 +17,7 @@ interface MessageInterface
      *
      * @return string
      */
-    public function getMessageType();
+    public function getMessageType(): string;
 
     /**
      * @return mixed

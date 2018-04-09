@@ -82,13 +82,14 @@ class Sender
             } catch (GatewayErrorException $exception) {
                 $results[$gateway] = [
                     'status' => self::STATUS_FAILURE,
-                    'exception' => $exception,
+                    'exception' => $exception->getMessage(),
                 ];
 
                 continue;
             }
         }
 
+        var_dump($results);
         if (!isset($isSuccessful)) {
             throw new NoGatewayAvailableException($results);
         }
@@ -196,7 +197,7 @@ class Sender
         $weight = [];
 
         foreach ($gateways as $key => $value) {
-            $weight[$key] = $value['weight'];
+            $weight[$key] = $value['weight'] ?? 10;
         }
 
         return $this->strategy()->apply($weight) ?? [];

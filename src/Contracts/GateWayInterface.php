@@ -41,15 +41,15 @@ interface GateWayInterface
 
     /**
      * @param $params
-     * @return array
+     * @return string
      */
     public function sign($params);
 
     /**
-     * @param array $params
+     * @param  $params
      * @return array
      */
-    public function request(array $params);
+    public function request($params = []);
 
     /**
      * @param $result

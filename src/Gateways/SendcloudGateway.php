@@ -10,7 +10,7 @@ use Viliy\SMS\Support\Config;
  * Class SendCouldGatewayway
  * @package Viliy\SMS\Gateways
  */
-class SendcouldGateway extends Gateway
+class SendcloudGateway extends Gateway
 {
 
     const API_URL = 'http://www.sendcloud.net/smsapi/send';
@@ -61,8 +61,11 @@ class SendcouldGateway extends Gateway
             'templateId' => $message->getIdentifier(),
             'phone'      => $phone,
             'msgType'    => 2,
-            'vars'       => json_encode($message->getData()),
         ];
+
+        if ($message->getData()) {
+            $params['vars'] = json_encode($message->getData());
+        }
 
         $params['signature'] = $this->sign($params);
 

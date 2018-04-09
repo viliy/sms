@@ -69,33 +69,16 @@ class WeilaiwuxianGateway extends Gateway
 
         $params['sign'] = $this->sign($content);
 
-        $result = $this->request($params);
+        $result = $this->request(json_encode($params));
 
         $this->checkStatus($result);
 
         return $result;
     }
 
-
-    /**
-     * @param array $vars
-     *
-     * @return string
-     */
-    protected function formatTemplateVars(array $vars)
-    {
-        $formatted = [];
-
-        foreach ($vars as $key => $value) {
-            $formatted[sprintf('%%%s%%', trim($key, '%'))] = $value;
-        }
-
-        return json_encode($formatted, JSON_FORCE_OBJECT);
-    }
-
     /**
      * @param $params
-     * @return array
+     * @return string
      */
     public function sign($params)
     {

@@ -31,11 +31,11 @@ abstract class Gateway implements GateWayInterface
     }
 
     /**
-     * @param array $params
+     * @param $params
      * @return array
      * @throws GatewayErrorException
      */
-    public function request(array $params)
+    public function request($params = [])
     {
         $response = (new Request($this->getRequestMethod(), $this->getApiUrl()))->send($params);
 
