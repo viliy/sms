@@ -2,3 +2,5 @@
 composer.lock
 vendor/
 index.php
+test.php
+test.sh
