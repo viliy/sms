@@ -40,7 +40,7 @@ abstract class Gateway implements GateWayInterface
         $response = (new Request($this->getRequestMethod(), $this->getApiUrl()))->send($params);
 
         if (!$response->isSuccessful()) {
-            throw new GatewayErrorException(sprintf('%s Gateway Error.', $this->getGatewayName()), 500);
+            throw new GatewayErrorException(__CLASS__ . ' Error.', 500);
         }
 
         return $response->toArray();

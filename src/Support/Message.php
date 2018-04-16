@@ -54,11 +54,9 @@ class Message implements MessageInterface
     }
 
     /**
-     * Return the message type.
-     *
      * @return string
      */
-    public function getMessageType()
+    public function getMessageType(): string
     {
         is_null($this->type) && $this->type = self::TEXT_MESSAGE;
 

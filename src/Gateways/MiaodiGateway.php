@@ -96,9 +96,7 @@ class MiaodiGateway extends Gateway
      */
     public function checkStatus($result = null)
     {
-
         if (!isset($result['respCode']) || '00000' !== $result['respCode']) {
-
             $msg = sprintf(
                 'MiaoDi Error. code: %s, message: %s',
                 $result['respCode'],
