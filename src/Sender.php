@@ -89,7 +89,6 @@ class Sender
             }
         }
 
-        var_dump($results);
         if (!isset($isSuccessful)) {
             throw new NoGatewayAvailableException($results);
         }
@@ -104,6 +103,7 @@ class Sender
      */
     public function getGateway($name): GateWayInterface
     {
+        var_dump($name);
         $name = ucfirst($name);
         if (!isset($this->gateways[$name]) && !class_exists($this->gateways[$name])) {
             throw new InvalidArgumentException(sprintf('Gateway "%s" not exists.', $name));
@@ -136,7 +136,7 @@ class Sender
         $classGateway = __NAMESPACE__ . "\\Gateways\\{$name}Gateway";
 
         if (!class_exists($classGateway)) {
-            throw new InvalidArgumentException(sprintf('Gateway "%s" not exists.', $classGateway));
+            throw new InvalidArgumentException(sprintf('Gateway %s not exists.', $name));
         }
 
         $this->gateways[$name] = new $classGateway();
