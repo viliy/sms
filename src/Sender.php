@@ -40,7 +40,7 @@ class Sender
      * @param string|null $strategy
      * @throws InvalidArgumentException
      */
-    public function __construct($gateways = [], string $strategy = null)
+    public function __construct(string $strategy = null, $gateways = [])
     {
         !is_null($strategy) && $this->makeStrategy($strategy);
         if (!empty($gateways)) {
@@ -69,7 +69,6 @@ class Sender
 
         $results = [];
         foreach ($strategyGateways as $gateway) {
-
             try {
                 $results[$gateway] = [
                     'status' => self::STATUS_SUCCESS,
@@ -97,32 +96,35 @@ class Sender
     }
 
     /**
-     * @param $name
-     * @return GateWayInterface
-     * @throws InvalidArgumentException
-     */
-    public function getGateway($name): GateWayInterface
-    {
-        var_dump($name);
-        $name = ucfirst($name);
-        if (!isset($this->gateways[$name]) && !class_exists($this->gateways[$name])) {
-            throw new InvalidArgumentException(sprintf('Gateway "%s" not exists.', $name));
-        }
-
-        return $this->gateways[$name];
-    }
-
-    /**
      * @param array $gateways
+     * @return $this
      * @throws InvalidArgumentException
      */
-    protected function createGateways(array $gateways)
+    public function createGateways(array $gateways)
     {
         foreach ($gateways as $gateway => $config) {
             if (!isset($this->gateways[$gateway]) || ($this->gateways[$gateway] instanceof GateWayInterface)) {
                 $this->makeGateway($gateway);
             }
         }
+
+        return $this;
+    }
+
+
+    /**
+     * @param $name
+     * @return GateWayInterface
+     * @throws InvalidArgumentException
+     */
+    protected function getGateway($name): GateWayInterface
+    {
+        $name = ucfirst($name);
+        if (!isset($this->gateways[$name]) && !class_exists($this->gateways[$name])) {
+            throw new InvalidArgumentException(sprintf('Gateway "%s" not exists.', $name));
+        }
+
+        return $this->gateways[$name];
     }
 
     /**
