@@ -44,7 +44,6 @@ class Sender
     {
         !is_null($strategy) && $this->makeStrategy($strategy);
         if (!empty($gateways)) {
-            $this->config = $gateways;
             $this->createGateways($gateways);
         }
     }
@@ -102,6 +101,8 @@ class Sender
      */
     public function createGateways(array $gateways)
     {
+        $this->config = $gateways;
+
         foreach ($gateways as $gateway => $config) {
             if (!isset($this->gateways[$gateway]) || ($this->gateways[$gateway] instanceof GateWayInterface)) {
                 $this->makeGateway($gateway);
