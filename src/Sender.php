@@ -80,7 +80,7 @@ class Sender
             } catch (GatewayErrorException $exception) {
                 $results[$gateway] = [
                     'status' => self::STATUS_FAILURE,
-                    'exception' => $exception->getMessage(),
+                    'result' => (array)$exception->raw ?? (array)$exception->getMessage(),
                 ];
 
                 continue;

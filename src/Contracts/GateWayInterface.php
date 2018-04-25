@@ -2,6 +2,7 @@
 
 namespace Viliy\SMS\Contracts;
 
+use Viliy\SMS\Exceptions\GatewayErrorException;
 use Viliy\SMS\Support\Config;
 
 /**
@@ -30,6 +31,7 @@ interface GateWayInterface
      * @param $phone
      * @param MessageInterface $message
      * @param $config
+     * @throws GatewayErrorException
      * @return array
      */
     public function send($phone, MessageInterface $message, Config $config = null);
