@@ -96,6 +96,10 @@ class MiaodiGateway extends Gateway
      */
     public function checkStatus($result = null)
     {
+        if (is_null($result)) {
+            throw new GatewayErrorException('未知错误', 500, []);
+        }
+
         if (!isset($result['respCode']) || '00000' !== $result['respCode']) {
             $msg = sprintf(
                 'MiaoDi Error. code: %s, message: %s',

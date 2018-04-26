@@ -6,6 +6,7 @@
 
 namespace Viliy\SMS\Gateways;
 
+use FastD\Http\Request;
 use Viliy\SMS\Contracts\MessageInterface;
 use Viliy\SMS\Exceptions\GatewayErrorException;
 use Viliy\SMS\Exceptions\GatewayMethodNotSupportException;
@@ -17,7 +18,7 @@ class JunmeiGateway extends Gateway
 
     use Render;
 
-    const API_URL = 'http://211.147.242.161:8888/sms.aspx';
+    const API_URL = 'http://120.77.14.55:8888/sms.aspx';
 
     const REQUEST_METHOD = 'POST';
 
@@ -68,9 +69,27 @@ class JunmeiGateway extends Gateway
 
         $result = $this->request($params);
 
+
         $this->checkStatus($result);
 
         return $result;
+    }
+
+    /**
+     * @param array $params
+     * @return array|mixed
+     * @throws GatewayErrorException
+     */
+    public function request($params = [])
+    {
+        $response = (new Request(self::REQUEST_METHOD, self::API_URL))->send($params);
+
+        if (!$response->isSuccessful()) {
+            throw new GatewayErrorException(__CLASS__ . ' Error.', 500);
+        }
+
+        return json_decode(json_encode(simplexml_load_string($response->getBody())), true);
+
     }
 
     /**
@@ -88,15 +107,17 @@ class JunmeiGateway extends Gateway
      */
     public function checkStatus($result = null)
     {
+        if (is_null($result)) {
+            throw new GatewayErrorException('未知错误', 500, []);
+        }
         if ('Faild' === $result['returnstatus']) {
-
             $msg = sprintf(
                 'junmei Error. code: %s, message: %s',
                 $result['returnstatus'],
                 $result['message']
             );
 
-            throw new GatewayErrorException($msg, $result['error_response']['code'], $result);
+            throw new GatewayErrorException($msg, $result['remainpoint'], $result);
         }
     }
 }

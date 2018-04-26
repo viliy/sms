@@ -109,6 +109,10 @@ class AlidayuGateway extends Gateway
      */
     public function checkStatus($result = null)
     {
+        if (is_null($result)) {
+            throw new GatewayErrorException('未知错误', 500, []);
+        }
+
         if (!empty($result['error_response'])) {
             if (isset($result['error_response']['sub_msg'])) {
                 $message = $result['error_response']['sub_msg'];

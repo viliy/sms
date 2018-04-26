@@ -116,6 +116,10 @@ class SendcloudGateway extends Gateway
      */
     public function checkStatus($result = null)
     {
+        if (is_null($result)) {
+            throw new GatewayErrorException('未知错误', 500, []);
+        }
+
         if (!$result['result']) {
             throw new GatewayErrorException($result['message'], $result['statusCode'], $result);
         }
