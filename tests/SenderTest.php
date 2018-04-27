@@ -1,11 +1,10 @@
 <?php
-
-use Viliy\SMS\Sender;
-
 /**
  * @author: ZhaQiu <34485431@qq.com>
  * @time: 2018/4/16
  */
+use Viliy\SMS\Sender;
+
 class SenderTest extends \PHPUnit\Framework\TestCase
 {
 
