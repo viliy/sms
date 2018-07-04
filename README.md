@@ -8,6 +8,7 @@
 - [秒嘀科技](http://www.miaodiyun.com/)
 - [未来无线](http://www.10690757.com)
 - [掌骏传媒](http://www.zjunmedia.cn)
+- [Nexmo](https://developer.nexmo.com)
 
 ## 环境需求
 
@@ -70,7 +71,12 @@ $gateways = [
         'password' => '*************',
         'signature' => '签名',
         'weight' => 10,
-
+    ],
+    'nexmo' => [
+        'api_key' => '******',
+        'api_secret' => '******',
+        'from' => 'NEXMO', // 官网这个值并没有要求
+        'signature' => '签名',
     ]
 ];
 
