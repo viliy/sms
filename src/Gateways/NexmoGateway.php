@@ -141,11 +141,11 @@ class NexmoGateway extends Gateway
     public function checkStatus($result = null)
     {
         if (is_null($result) || !isset($result['messages'])) {
-            throw new GatewayErrorException(__CLASS__ . ' Error.', 500, []);
+            throw new GatewayErrorException(__CLASS__ . ' Error.', 500, $result ?? []);
         }
 
         if (0 !== $result['messages'][0]['status']) {
-            throw new GatewayErrorException( json_encode($result), 500, []);
+            throw new GatewayErrorException( json_encode($result), 500, $result);
         }
     }
 }
