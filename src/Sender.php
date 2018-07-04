@@ -104,7 +104,7 @@ class Sender
         $this->config = $gateways;
 
         foreach ($gateways as $gateway => $config) {
-            if (!isset($this->gateways[$gateway]) || ($this->gateways[$gateway] instanceof GateWayInterface)) {
+            if (!isset($this->gateways[$gateway]) || !($this->gateways[$gateway] instanceof GateWayInterface)) {
                 $this->makeGateway($gateway);
             }
         }

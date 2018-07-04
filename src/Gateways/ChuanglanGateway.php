@@ -93,7 +93,11 @@ class ChuanglanGateway extends Gateway
         );
 
         if (!$response->isSuccessful()) {
-            throw new GatewayErrorException(__CLASS__ . ' Error.', 500);
+            if (!empty($result = $response->toArray())) {
+                throw new GatewayErrorException(__CLASS__ . ' Error.', 500);
+            } else {
+                throw new GatewayErrorException(__CLASS__ . ': ' . json_encode($result), 500);
+            }
         }
 
         return $response->toArray();
