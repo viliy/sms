@@ -64,8 +64,7 @@ class NexmoGateway extends Gateway
             'api_secret' => $config->get('api_secret'),
             'to'         => $phone,
             'from'       => $config->get('from'),
-            'text'       => '【' . $this->config->get('signature') . '】' .
-                $this->render($message->getContent(), $message->getData()),
+            'text'       => '【易起問】驗證碼:23456。搜索微信公眾號：易起問，關註可問壹分錢問大師。',
             'type'       => 'unicode'
         ];
 
@@ -144,7 +143,7 @@ class NexmoGateway extends Gateway
             throw new GatewayErrorException(__CLASS__ . ' Error.', 500, $result ?? []);
         }
 
-        if (0 !== $result['messages'][0]['status']) {
+        if (0 !== (int)$result['messages'][0]['status']) {
             throw new GatewayErrorException( json_encode($result), 500, $result);
         }
     }
