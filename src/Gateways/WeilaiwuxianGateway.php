@@ -16,7 +16,7 @@ class WeilaiwuxianGateway extends Gateway
 
     use Render;
 
-    const API_URL = 'http://43.243.130.33:8860/sendSms';
+    const API_URL = 'http://123.58.255.70:8860/sendSms';
 
     const REQUEST_METHOD = 'POST';
 
