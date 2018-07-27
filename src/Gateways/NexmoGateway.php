@@ -64,7 +64,8 @@ class NexmoGateway extends Gateway
             'api_secret' => $config->get('api_secret'),
             'to'         => $phone,
             'from'       => $config->get('from'),
-            'text'       => '【易起問】驗證碼:23456。搜索微信公眾號：易起問，關註可問壹分錢問大師。',
+            'text'       => '【' . $this->config->get('signature') . '】' .
+                $this->Render($message->getContent(), $message->getData()),
             'type'       => 'unicode'
         ];
 
