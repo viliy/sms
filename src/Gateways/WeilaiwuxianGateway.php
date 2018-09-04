@@ -95,8 +95,12 @@ class WeilaiwuxianGateway extends Gateway
             throw new GatewayErrorException('未知错误', 500, []);
         }
 
-        if (!$result['result']) {
+        if (isset($result['result']) && !$result['result']) {
             throw new GatewayErrorException($result['message'], $result['statusCode'], $result);
+        }
+
+        if (isset($result)) {
+            throw new GatewayErrorException(json_encode($result, 256), 500, $result);
         }
     }
 }
