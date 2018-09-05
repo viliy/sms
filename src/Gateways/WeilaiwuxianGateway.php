@@ -92,15 +92,19 @@ class WeilaiwuxianGateway extends Gateway
     public function checkStatus($result = null)
     {
         if (is_null($result)) {
-            throw new GatewayErrorException('未知错误', 500, []);
+            throw new GatewayErrorException('remote server error', 500, []);
         }
 
-        if (isset($result['result']) && !$result['result']) {
-            throw new GatewayErrorException($result['message'], $result['statusCode'], $result);
+        if (isset($result['respCode']) && '0' !== $result['respCode']) {
+            throw new GatewayErrorException($result['respMsg'], $result['respCode'], $result);
         }
 
-        if (isset($result)) {
-            throw new GatewayErrorException(json_encode($result, 256), 500, $result);
+        if (isset($result['result']) && is_array($result['result'])) {
+            foreach ($result['result'] as $key => $value) {
+                if ('0' !== $value['code']) {
+                    throw new GatewayErrorException($result['msg'], $result['code'], $result);
+                }
+            }
         }
     }
 }
