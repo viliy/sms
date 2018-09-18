@@ -113,10 +113,8 @@ class ChuanglanGateway extends Gateway
             throw new GatewayErrorException('unknown error', 500, []);
         }
 
-        if (!isset($result['status']) || 'success' !== $result['status']) {
-            throw new GatewayErrorException($result['result']['errorMsg'], $result['result']['code'], $result);
-        } elseif (!isset($result['result']['code']) || $result['result']['code'] != '0') {
-            throw new GatewayErrorException($result['result']['errorMsg'], $result['result']['code'], $result);
+        if (!isset($result['code']) || $result['code'] != '0') {
+            throw new GatewayErrorException($result['errorMsg'], $result['code'], $result);
         }
     }
 }
