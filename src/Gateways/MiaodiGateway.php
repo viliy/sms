@@ -68,7 +68,7 @@ class MiaodiGateway extends Gateway
             "respDataType"  => "JSON"
         ];
 
-        $result = $this->request($params);
+        $result = $this->request($params)->toArray();
 
         $this->checkStatus($result);
 

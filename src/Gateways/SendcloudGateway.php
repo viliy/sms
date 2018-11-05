@@ -69,7 +69,7 @@ class SendcloudGateway extends Gateway
 
         $params['signature'] = $this->sign($params);
 
-        $result = $this->request($params);
+        $result = $this->request($params)->toArray();
 
         $this->checkStatus($result);
 

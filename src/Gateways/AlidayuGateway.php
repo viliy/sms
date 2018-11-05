@@ -77,7 +77,7 @@ class AlidayuGateway extends Gateway
 
         $params['sign'] = $this->sign($params);
 
-        $result = $this->request($params);
+        $result = $this->request($params)->toArray();
 
         $this->checkStatus($result);
 

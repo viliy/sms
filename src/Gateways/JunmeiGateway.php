@@ -69,7 +69,6 @@ class JunmeiGateway extends Gateway
 
         $result = $this->request($params);
 
-
         $this->checkStatus($result);
 
         return $result;
@@ -89,7 +88,6 @@ class JunmeiGateway extends Gateway
         }
 
         return json_decode(json_encode(simplexml_load_string($response->getBody())), true);
-
     }
 
     /**

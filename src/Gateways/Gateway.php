@@ -7,6 +7,7 @@
 namespace Viliy\SMS\Gateways;
 
 use FastD\Http\Request;
+use FastD\Http\Response;
 use Viliy\SMS\Contracts\GateWayInterface;
 use Viliy\SMS\Exceptions\GatewayErrorException;
 use Viliy\SMS\Support\Config;
@@ -32,7 +33,7 @@ abstract class Gateway implements GateWayInterface
 
     /**
      * @param $params
-     * @return array
+     * @return Response
      * @throws GatewayErrorException
      */
     public function request($params = [])
@@ -47,6 +48,6 @@ abstract class Gateway implements GateWayInterface
             }
         }
 
-        return $response->toArray();
+        return $response;
     }
 }

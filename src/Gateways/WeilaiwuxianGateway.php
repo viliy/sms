@@ -69,7 +69,7 @@ class WeilaiwuxianGateway extends Gateway
 
         $params['sign'] = $this->sign($content);
 
-        $result = $this->request(json_encode($params));
+        $result = $this->request(json_encode($params))->toArray();
 
         $this->checkStatus($result);
 
