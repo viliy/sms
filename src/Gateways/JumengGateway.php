@@ -96,11 +96,11 @@ class JumengGateway extends Gateway
      */
     public function checkStatus($result = null)
     {
-        if (!isset($result['returnsms']) || !isset($result['returnsms']['result'])) {
+        if (!isset($result['result'])) {
             throw new GatewayErrorException('the jumeng gateway returns no data', 500, $result ?? []);
         }
-        if (0 !== $result['returnsms']['result']) {
-            throw new GatewayErrorException($result['errorMsg'], 500, $result);
+        if (0 != $result['result']) {
+            throw new GatewayErrorException($result['desc'], 500, $result);
         }
     }
 }
