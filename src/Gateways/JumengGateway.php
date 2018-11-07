@@ -6,6 +6,7 @@
 
 namespace Viliy\SMS\Gateways;
 
+use FastD\Http\Request;
 use Viliy\SMS\Contracts\MessageInterface;
 use Viliy\SMS\Exceptions\GatewayErrorException;
 use Viliy\SMS\Support\Config;
@@ -23,6 +24,8 @@ class JumengGateway extends Gateway
     use Render;
 
     const API_URL = 'http://58.252.3.163:8357/smsgwhttp/sms/submit';
+
+    const REPORT_URL = 'http://58.252.3.163:8357/smsgwhttp/sms/report';
 
     const REQUEST_METHOD = 'GET';
 
@@ -102,5 +105,34 @@ class JumengGateway extends Gateway
         if (0 != $result['result']) {
             throw new GatewayErrorException($result['desc'], 500, $result);
         }
+    }
+
+
+    /**
+     * @param Config $config
+     * @return array
+     * @throws GatewayErrorException
+     */
+    public function report(Config $config)
+    {
+        $params = [
+            'spid' => $config->get('spid'),
+            'password' => $config->get('password'),
+            'ac' => $config->get('ac')
+        ];
+
+        $response = (new Request($this->getRequestMethod(), self::REPORT_URL))->send($params);
+
+        if (!$response->isSuccessful()) {
+            if (!empty($result = $response->toArray())) {
+                throw new GatewayErrorException(__CLASS__ . ' Error.', 500);
+            } else {
+                throw new GatewayErrorException(__CLASS__ . ': ' . json_encode($result), 500);
+            }
+        }
+
+        $result = json_decode(json_encode(simplexml_load_string($response->getBody())), true);
+
+        return $result;
     }
 }

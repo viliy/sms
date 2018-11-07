@@ -57,4 +57,10 @@ interface GateWayInterface
      * @param $result
      */
     public function checkStatus($result = null);
+
+    /**
+     * @param Config $config
+     * @return array
+     */
+    public function report(Config $config);
 }

@@ -50,4 +50,13 @@ abstract class Gateway implements GateWayInterface
 
         return $response;
     }
+
+    /**
+     * @param Config $config
+     * @return array
+     */
+    public function report(Config $config)
+    {
+        // TODO: Implement report() method.
+    }
 }

@@ -8,6 +8,7 @@ use Viliy\SMS\Contracts\StrategyInterface;
 use Viliy\SMS\Exceptions\GatewayErrorException;
 use Viliy\SMS\Exceptions\InvalidArgumentException;
 use Viliy\SMS\Exceptions\NoGatewayAvailableException;
+use Viliy\SMS\Gateways\Gateway;
 use Viliy\SMS\Support\Config;
 use Viliy\SMS\Support\Message;
 
@@ -204,5 +205,19 @@ class Sender
         }
 
         return $this->strategy()->apply($weight) ?? [];
+    }
+
+    /**
+     * @param array $gateway
+     * @return array
+     * @throws InvalidArgumentException
+     */
+    public function report(array $gateway)
+    {
+        $gatewayName = array_keys($gateway)[0];
+
+        $this->makeGateway($gatewayName);
+
+        return $this->getGateway($gatewayName)->report(new Config($gateway[$gatewayName]));
     }
 }
