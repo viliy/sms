@@ -31,6 +31,11 @@ class JumengGateway extends Gateway
 
     const NAME = 'jumeng';
 
+
+    protected $sendApi;
+
+    protected $reportApi;
+
     /**
      * @return string
      */
@@ -66,6 +71,8 @@ class JumengGateway extends Gateway
     {
         !is_null($config) && $this->setConfig($config);
 
+        $this->setSendApi($config->get('send_api'));
+
         $params = [
             'spid' => $config->get('spid'),
             'password' => $config->get('password'),
@@ -82,6 +89,22 @@ class JumengGateway extends Gateway
         $this->checkStatus($result);
 
         return $result;
+    }
+
+
+    public function request($params = [])
+    {
+        $response = (new Request($this->getRequestMethod(), $this->getSendApi()))->send($params);
+
+        if (!$response->isSuccessful()) {
+            if (!empty($result = $response->toArray())) {
+                throw new GatewayErrorException(__CLASS__ . ' Error.', 500);
+            } else {
+                throw new GatewayErrorException(__CLASS__ . ': ' . json_encode($result), 500);
+            }
+        }
+
+        return $response;
     }
 
     /**
@@ -121,7 +144,9 @@ class JumengGateway extends Gateway
             'ac' => $config->get('ac')
         ];
 
-        $response = (new Request($this->getRequestMethod(), self::REPORT_URL))->send($params);
+        $this->setReportApi($config->get('report_api'));
+
+        $response = (new Request($this->getRequestMethod(), $this->getReportApi()))->send($params);
 
         if (!$response->isSuccessful()) {
             if (!empty($result = $response->toArray())) {
@@ -134,5 +159,37 @@ class JumengGateway extends Gateway
         $result = json_decode(json_encode(simplexml_load_string($response->getBody())), true);
 
         return $result;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSendApi()
+    {
+        return $this->sendApi;
+    }
+
+    /**
+     * @param string $sendApi
+     */
+    public function setSendApi($sendApi)
+    {
+        $this->sendApi = $sendApi;
+    }
+
+    /**
+     * @return string
+     */
+    public function getReportApi()
+    {
+        return $this->reportApi;
+    }
+
+    /**
+     * @param string $reportApi
+     */
+    public function setReportApi($reportApi)
+    {
+        $this->reportApi = $reportApi;
     }
 }
